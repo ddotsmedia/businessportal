@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: portal-db
+    environment:
+      POSTGRES_USER: portal
+      POSTGRES_PASSWORD: portal
+      POSTGRES_DB: portal
+    ports:
+      - '5433:5432'
+    volumes:
+      - portal_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U portal -d portal']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+        max-file: '3'
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: portal-web
+    environment:
+      NODE_ENV: production
+      APP_URL: http://localhost:3100
+      DATABASE_URL: postgresql://portal:portal@db:5432/portal
+      AUTH_SECRET: change-me-in-production
+      EMAIL_PROVIDER: log
+      LOG_LEVEL: info
+    ports:
+      - '3100:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+        max-file: '3'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    container_name: portal-worker
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://portal:portal@db:5432/portal
+      LOG_LEVEL: info
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 256m
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+        max-file: '3'
+    restart: unless-stopped
+
+volumes:
+  portal_db:
