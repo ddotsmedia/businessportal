@@ -11,7 +11,7 @@ export default defineConfig({
       '**/packages/db/**/__tests__/**',
     ],
     env: {
-      DATABASE_URL: 'postgresql://portal:portal@localhost:5433/portal',
+      DATABASE_URL: 'postgresql://portal:portal@localhost:5434/portal',
     },
   },
 });

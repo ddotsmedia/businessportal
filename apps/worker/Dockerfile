@@ -18,7 +18,11 @@ ENV NODE_ENV=production
 RUN addgroup -g 1001 -S nodejs && adduser -S worker -u 1001
 
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/worker/node_modules ./apps/worker/node_modules
+COPY --from=builder /app/apps/worker/package.json ./apps/worker/package.json
 COPY --from=builder /app/apps/worker/dist ./apps/worker/dist
+COPY --from=builder /app/packages/db/node_modules ./packages/db/node_modules
+COPY --from=builder /app/packages/db/package.json ./packages/db/package.json
 COPY --from=builder /app/packages/db/dist ./packages/db/dist
 
 USER worker

@@ -20,6 +20,10 @@ RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/node_modules/.pnpm/@prisma+client@6.19.3_prisma@6.19.3_typescript@5.9.3__typescript@5.9.3/node_modules/.prisma/client/libquery_engine-linux-musl-openssl-3.0.x.so.node ./prisma-engines/libquery_engine-linux-musl-openssl-3.0.x.so.node
+
+ENV PRISMA_QUERY_ENGINE_LIBRARY=/app/prisma-engines/libquery_engine-linux-musl-openssl-3.0.x.so.node
+ENV HOSTNAME=0.0.0.0
 
 USER nextjs
 

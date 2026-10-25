@@ -4,9 +4,9 @@ import tseslint from 'typescript-eslint';
 export default [
   {
     ignores: [
-      'node_modules',
-      'dist',
-      '.next',
+      '**/node_modules',
+      '**/dist',
+      '**/.next',
       'coverage',
       '.pnpm-store',
       'apps/web/next-env.d.ts',

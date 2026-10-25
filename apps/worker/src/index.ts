@@ -10,8 +10,9 @@ async function start() {
   await boss.start();
   console.log('pg-boss started');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (boss as any).subscribe('heartbeat', async () => {
+  await boss.createQueue('heartbeat');
+
+  await boss.work('heartbeat', async () => {
     console.log(`[${new Date().toISOString()}] Heartbeat job executed`);
   });
 

@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: portal
       POSTGRES_DB: portal
     ports:
-      - '5433:5432'
+      - '5434:5432'
     volumes:
       - portal_db:/var/lib/postgresql/data
     healthcheck:
@@ -49,7 +49,7 @@ services:
         max-file: '3'
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
+      test: ['CMD', 'node', '-e', "require('http').get('http://localhost:3000/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
       interval: 30s
       timeout: 10s
       retries: 3
