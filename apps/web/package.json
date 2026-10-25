@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "test:e2e": "playwright test",
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",

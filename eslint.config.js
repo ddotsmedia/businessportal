@@ -9,6 +9,7 @@ export default [
       '.next',
       'coverage',
       '.pnpm-store',
+      'apps/web/next-env.d.ts',
       'packages/ui/src/components/button.tsx',
     ],
   },
