@@ -13,7 +13,7 @@
   "dependencies": {
     "@businessportal/db": "workspace:*",
     "pg-boss": "^10.0.0",
-    "zod": "^3.0.0"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
